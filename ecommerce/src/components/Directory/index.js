@@ -1,7 +1,7 @@
 import React from 'react';
 import ShopWomen from './../../assets/shopWomens.jpg'
 import ShopMen from './../../assets/shopMens.jpg'
-
+import './styles.scss'
 const Directory = props =>{
 return(
     <div className = "directory">

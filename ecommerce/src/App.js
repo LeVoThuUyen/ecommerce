@@ -4,10 +4,10 @@ import Header from './components/Header'
 import Homepage from './pages/Homepage';
 function App() {
   return (
-    <div className="App">
+    <div className="app">
       <Header/>
       <div className = "main">
-      <Homepage/>
+        <Homepage/>
       </div>
     </div>
   );
