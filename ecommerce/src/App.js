@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import "./default.scss";
 import { auth, handleUserProfile } from "./firebase/utils";
@@ -14,21 +14,21 @@ import WithAuth from './hoc/withAuth';
 import Dashboard from './pages/Dashboard';
 const App = props =>{
   
-  const { setCurrentUser, currentUser} = props;
+  const dispatch = useDispatch();
   useEffect(()=>{
    
     const authListener = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await handleUserProfile(userAuth);
         userRef.onSnapshot((snapshot) => {
-          setCurrentUser({
+          dispatch(setCurrentUser({
               id: snapshot.id,
               ...snapshot.data()
             
-          });
+          }));
         });
       }
-      setCurrentUser(userAuth);
+      dispatch(setCurrentUser(userAuth));
     });
     return () => {
       authListener();
@@ -50,7 +50,7 @@ const App = props =>{
           />
           <Route
             path="/registration"
-            render={() => currentUser ? <Redirect to="/" /> :(
+            render={() =>(
               <MainLayout >
                 <Registration />
               </MainLayout>
@@ -59,9 +59,7 @@ const App = props =>{
           <Route
             path="/login"
             render={() =>
-              currentUser ? (
-                <Redirect to="/" />
-              ) : (
+              (
                 <MainLayout >
                   <Login />
                 </MainLayout>
@@ -90,10 +88,5 @@ const App = props =>{
     );
   }
 
-const mapStateToProps = ({user}) => ({
-  currentUser : user.currentUser
-});
-const mapDispatchToProps = dispatch => ({
-  setCurrentUser : user => dispatch(setCurrentUser(user))
-})
-export default connect (mapStateToProps, mapDispatchToProps) (App);
+
+export default App;
