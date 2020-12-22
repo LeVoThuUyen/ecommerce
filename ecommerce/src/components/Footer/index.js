@@ -1,7 +1,7 @@
 import React from "react";
 import "./styles.scss";
 
-const Footer = (props) => {
+const Footer = props => {
   return (
     <footer className="footer">
       <div className="wrap">Shopping Page 2020</div>

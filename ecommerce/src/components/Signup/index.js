@@ -1,84 +1,77 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { signUpUser, resetAllAuthForms } from "./../../redux/User/user.actions";
-import { withRouter } from 'react-router-dom';
-import './styles.scss';
-import AuthWrapper from './../AuthWrapper';
-import FormInput from './../forms/FormInput';
-import Button from './../forms/Button';
+import { useHistory } from "react-router-dom";
+import { signUpUserStart } from "./../../redux/User/user.actions";
+import "./styles.scss";
+
+import AuthWrapper from "./../AuthWrapper";
+import FormInput from "./../forms/FormInput";
+import Button from "./../forms/Button";
 
 const mapState = ({ user }) => ({
-  signUpSuccess: user.signUpSuccess,
-  signUpError: user.signUpError
+  currentUser: user.currentUser,
+  userErr: user.userErr
 });
 
-
 const Signup = props => {
-  const { signUpSuccess, signUpError } = useSelector(mapState);
   const dispatch = useDispatch();
-  const [displayName, setDisplayName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const history = useHistory();
+  const { currentUser, userErr } = useSelector(mapState);
+  const [displayName, setDisplayName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
 
   useEffect(() => {
-    if (signUpSuccess) {
+    if (currentUser) {
       reset();
-      dispatch(resetAllAuthForms());
-      props.history.push('/');
+      history.push("/");
     }
-
-  }, [signUpSuccess]);
+  }, [currentUser]);
 
   useEffect(() => {
-    if (Array.isArray(signUpError) && signUpError.length > 0) {
-      setErrors(signUpError);
+    if (Array.isArray(userErr) && userErr.length > 0) {
+      setErrors(userErr);
     }
+  }, [userErr]);
 
-  }, [signUpError]);
   const reset = () => {
-    setDisplayName('');
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
+    setDisplayName("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
     setErrors([]);
   };
 
   const handleFormSubmit = event => {
     event.preventDefault();
-   
-    dispatch(signUpUser({
-      displayName,
-      email,
-      password,
-      confirmPassword
-    }));
-
-  }
+    dispatch(
+      signUpUserStart({
+        displayName,
+        email,
+        password,
+        confirmPassword
+      })
+    );
+  };
 
   const configAuthWrapper = {
-    headline: 'Registration'
+    headline: "Registration"
   };
 
   return (
     <AuthWrapper {...configAuthWrapper}>
       <div className="formWrap">
-
         {errors.length > 0 && (
           <ul>
             {errors.map((err, index) => {
-              return (
-                <li key={index}>
-                  {err}
-                </li>
-              );
+              return <li key={index}>{err}</li>;
             })}
           </ul>
         )}
 
         <form onSubmit={handleFormSubmit}>
-
           <FormInput
             type="text"
             name="displayName"
@@ -111,14 +104,11 @@ const Signup = props => {
             handleChange={e => setConfirmPassword(e.target.value)}
           />
 
-          <Button type="submit">
-            Register
-            </Button>
-            </form>
-          </div>
-          </AuthWrapper>
-    );
-  }
+          <Button type="submit">Register</Button>
+        </form>
+      </div>
+    </AuthWrapper>
+  );
+};
 
-
-  export default withRouter(Signup);
+export default Signup;
