@@ -10,7 +10,10 @@ import Login from "./pages/Login";
 import Recovery from "./pages/Recovery";
 import Registration from "./pages/Registration";
 import WithAuth from "./hoc/withAuth";
+import WithAdminAuth from "./hoc/withAdminAuth";
 import Dashboard from "./pages/Dashboard";
+import AdminToolbar from "./components/AdminToolbar";
+import Admin from "./pages/Admin";
 
 const App = props => {
   const dispatch = useDispatch();
@@ -20,6 +23,7 @@ const App = props => {
 
   return (
     <div className="app">
+      <AdminToolbar />
       <Switch>
         <Route
           exact
@@ -62,6 +66,16 @@ const App = props => {
                 <Dashboard />
               </MainLayout>
             </WithAuth>
+          )}
+        />
+        <Route
+          path="/admin"
+          render={() => (
+            <WithAdminAuth>
+              <MainLayout>
+                <Admin />
+              </MainLayout>
+            </WithAdminAuth>
           )}
         />
       </Switch>
