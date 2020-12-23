@@ -1,54 +1,57 @@
-import { firestore } from "./../../firebase/utils";
+import { firestore } from './../../firebase/utils';
 
-export const handleAddProduct = (product) => {
+export const handleAddProduct = product => {
   return new Promise((resolve, reject) => {
     firestore
-      .collection("products")
+      .collection('products')
       .doc()
       .set(product)
       .then(() => {
         resolve();
       })
-      .catch((err) => {
+      .catch(err => {
         reject(err);
-      });
+      })
   });
-};
+}
 
-export const handleFetchProducts = () => {
+export const handleFetchProducts = ({ filterType }) => {
   return new Promise((resolve, reject) => {
-    firestore
-      .collection("products")
-      .orderBy('createdDate')
+
+    let ref = firestore.collection('products').orderBy('createdDate');
+
+    if (filterType) ref = ref.where('productCategory', '==', filterType);
+
+    ref
       .get()
-      .then((snapshot) => {
-        const productsArray = snapshot.docs.map((doc) => {
+      .then(snapshot => {
+        const productsArray = snapshot.docs.map(doc => {
           return {
             ...doc.data(),
-            documentID: doc.id,
-          };
+            documentID: doc.id
+          }
         });
         resolve(productsArray);
       })
-      .catch((err) => {
+      .catch(err => {
         reject(err);
-      });
-  });
-};
+      })
+  })
+}
 
-export const handleDeleteProduct = (documentID) => {
-  console.log(documentID, 1);
+export const handleDeleteProduct = documentID => {
+  console.log(documentID, 1)
   return new Promise((resolve, reject) => {
     firestore
-      .collection("products")
+      .collection('products')
       .doc(documentID)
       .delete()
       .then(() => {
-        console.log(documentID, 2);
+        console.log(documentID, 2)
         resolve();
       })
-      .catch((err) => {
+      .catch(err => {
         reject(err);
-      });
+      })
   });
-};
+}

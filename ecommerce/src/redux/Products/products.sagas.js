@@ -1,16 +1,16 @@
-import { auth } from "./../../firebase/utils";
-import { takeLatest, put, all, call } from "redux-saga/effects";
-import { setProducts, fetchProductsStart } from "./products.actions";
-import {
-  handleAddProduct,
-  handleFetchProducts,
-  handleDeleteProduct,
-} from "./products.helpers";
-import productsTypes from "./products.types";
+import { auth } from './../../firebase/utils';
+import { takeLatest, put, all, call } from 'redux-saga/effects';
+import { setProducts, fetchProductsStart } from './products.actions';
+import { handleAddProduct, handleFetchProducts, handleDeleteProduct } from './products.helpers';
+import productsTypes from './products.types';
 
-export function* addProduct({
-  payload: { productCategory, productName, productThumbnail, productPrice },
-}) {
+export function* addProduct({ payload: {
+  productCategory,
+  productName,
+  productThumbnail,
+  productPrice
+}}) {
+
   try {
     const timestamp = new Date();
     yield handleAddProduct({
@@ -19,22 +19,32 @@ export function* addProduct({
       productThumbnail,
       productPrice,
       productAdminUserUID: auth.currentUser.uid,
-      createdDate: timestamp,
+      createdDate: timestamp
     });
-    yield put(fetchProductsStart());
+    yield put(
+      fetchProductsStart()
+    );
+
+
   } catch (err) {
     // console.log(err);
   }
+
 }
 
 export function* onAddProductStart() {
   yield takeLatest(productsTypes.ADD_NEW_PRODUCT_START, addProduct);
 }
 
-export function* fetchProducts() {
+export function* fetchProducts({ payload: {
+  filterType
+}}) {
   try {
-    const products = yield handleFetchProducts();
-    yield put(setProducts(products));
+    const products = yield handleFetchProducts({ filterType });
+    yield put(
+      setProducts(products)
+    );
+
   } catch (err) {
     // console.log(err);
   }
@@ -47,7 +57,10 @@ export function* onFetchProductsStart() {
 export function* deleteProduct({ payload }) {
   try {
     yield handleDeleteProduct(payload);
-    yield put(fetchProductsStart());
+    yield put (
+      fetchProductsStart()
+    );
+
   } catch (err) {
     // console.log(err);
   }
@@ -62,5 +75,5 @@ export default function* productsSagas() {
     call(onAddProductStart),
     call(onFetchProductsStart),
     call(onDeleteProductStart),
-  ]);
+  ])
 }
