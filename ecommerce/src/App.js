@@ -16,7 +16,7 @@ import AdminToolbar from "./components/AdminToolbar";
 import Admin from "./pages/Admin";
 import AdminLayout from "./layouts/AdminLayout";
 import DashboardLayout from "./layouts/DashboardLayout";
-
+import Search from "./pages/Search";
 const App = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -34,6 +34,14 @@ const App = (props) => {
             <HomepageLayout>
               <Homepage />
             </HomepageLayout>
+          )}
+        />
+        <Route
+          path="/search"
+          render={() => (
+            <MainLayout>
+              <Search />
+            </MainLayout>
           )}
         />
         <Route

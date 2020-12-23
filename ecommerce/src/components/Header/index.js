@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 import logo from "./../../assets/logo1.jpg";
 
 const mapState = ({ user }) => ({
-  currentUser: user.currentUser
+  currentUser: user.currentUser,
 });
 
-const Header = props => {
+const Header = (props) => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector(mapState);
 
@@ -25,6 +25,16 @@ const Header = props => {
             <img src={logo} alt="logo" />
           </Link>
         </div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/search">Search</Link>
+            </li>
+          </ul>
+        </nav>
 
         <div className="callToActions">
           {currentUser && (
@@ -58,7 +68,7 @@ const Header = props => {
 };
 
 Header.defaultProps = {
-  currentUser: null
+  currentUser: null,
 };
 
 export default Header;
