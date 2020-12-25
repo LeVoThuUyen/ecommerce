@@ -59,7 +59,6 @@ export const handleFetchProducts = ({
 };
 
 export const handleDeleteProduct = (documentID) => {
-  console.log(documentID, 1);
   return new Promise((resolve, reject) => {
     firestore
       .collection("products")
@@ -73,4 +72,24 @@ export const handleDeleteProduct = (documentID) => {
         reject(err);
       });
   });
+}
+
+export const handleFetchProduct = (productID) => {
+  return new Promise((resolve, reject) => {
+    firestore
+      .collection('products')
+      .doc(productID)
+      .get()
+      .then(snapshot => {
+
+        if (snapshot.exists) {
+          resolve(
+            snapshot.data()
+          );
+        }
+      })
+      .catch(err => {
+        reject(err);
+      })
+  })
 };

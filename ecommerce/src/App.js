@@ -17,6 +17,7 @@ import Admin from "./pages/Admin";
 import AdminLayout from "./layouts/AdminLayout";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Search from "./pages/Search";
+import ProductDetails from './pages/ProductDetails';
 const App = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -47,6 +48,11 @@ const App = (props) => {
             </MainLayout>
           )}
         />
+          <Route path="/product/:productID" render={() => (
+          <MainLayout>
+            <ProductDetails />
+          </MainLayout>
+        )} />
         <Route
           path="/registration"
           render={() => (
