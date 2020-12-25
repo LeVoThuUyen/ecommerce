@@ -18,6 +18,7 @@ import AdminLayout from "./layouts/AdminLayout";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Search from "./pages/Search";
 import ProductDetails from './pages/ProductDetails';
+import Cart from './pages/Cart';
 const App = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -51,6 +52,11 @@ const App = (props) => {
           <Route path="/product/:productID" render={() => (
           <MainLayout>
             <ProductDetails />
+          </MainLayout>
+        )} />
+        <Route path="/cart" render={() => (
+          <MainLayout>
+            <Cart />
           </MainLayout>
         )} />
         <Route
